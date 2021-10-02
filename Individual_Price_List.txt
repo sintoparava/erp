@@ -39,7 +39,7 @@ Add:Part:price_list_Features
  [Part: price_list_Part]
 ;; 	 Background:black
 	Local:Field:default:Background:white
-	Local:Field:default:Border:thinbox
+	Local:Field:default:Border:thinbottom
 ;	Local:Field:default:Color:white
 
 
