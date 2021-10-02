@@ -1,0 +1,140 @@
+ [#Part: STKI Basic Features]
+Add:Part:price_list_Features
+
+[Part: price_list_Features]
+	
+	Lines		:  price_list_Features
+		
+    [Line: price_list_Features]
+         Fields      : Medium Prompt, price_list_Features
+         Local		: Field	: Medium Prompt	: Set as	:  "Show price list ?"
+		 Local		: Field	: Medium Prompt	: Inactive	: $$IsSysName:$BaseUnits
+	
+ [Field: price_list_Features]
+
+    Use         : Logical Field
+    Set as      : No
+    Inactive    : $$IsSysName:$BaseUnits
+    Sub form    : price_list Report  : $$Value
+
+ 
+ [Report: price_list Report]
+
+	Form	: price_list_Form
+;cFull Screen: Yes
+
+[Form: price_list_Form]
+
+	Parts	: price_list_Part
+	Button	: Export Button
+	Full Height:Yes
+	Full Width:Yes
+	Horizontal Align:Left
+	Vertical Align:Top
+	Width:80% page
+	
+;[#Part: STKI Basic Features]
+;Add:Part:price_list_Part
+;[#Part: STKI Parent]
+ [Part: price_list_Part]
+;; 	 Background:black
+	Local:Field:default:Background:white
+	Local:Field:default:Border:thinbox
+;	Local:Field:default:Color:white
+
+
+
+	add:Lines	: Price_Level 
+	Repeat	: Price_Level:Full Price List
+	Vertical: Yes
+	Scroll:Vertical
+	
+	[Line:Price_Level]
+		Field:ShortPrompt,Price_Date,mediumprompt,Price_Level
+	Local:Field:mediumprompt:Set as:"PriceLevel"
+	Local:Field:ShortPrompt:Set as:"Date"
+	Local:Field:ShortPrompt:Width:10% screen
+	Local:Field:mediumprompt:Width:10% screen
+
+Explode: Price_Level_List:yes
+
+[Field:Price_Date]
+	Use:unidatefield
+	Set as:$Date
+	Storage:Date
+[Field:Price_Level]
+	Use:namefield
+	Set as:$PriceLevel
+	Storage:PriceLevel
+	
+
+[Part:Price_Level_List]
+	Line:Price_Level_TTL,Price_Level_List
+	Repeat:Price_Level_List:Price Level List
+	Break On:$$IsEmpty:$Rate
+	Scroll	: Vertical
+	Vertical:Yes
+	
+[Line:Price_Level_TTL]
+	Use:Price_Level_List
+	Local:Field:default:Delete:Storage
+	Local:Field:default:Type:String
+ 	Local:Field:PL_item:Set as:"Item"
+ 	Local:Field:PL_from:Set as:"From:"
+ 	Local:Field:PL_to:Set as:"Less Than"
+ 	Local:Field:PL_Rate:Set as:"Rate"
+ 	Local:Field:PL_Discount:Set as:"Discount"
+
+ [Line:Price_Level_List]
+	Field:PL_item,PL_from,PL_to
+	Right Field:PL_Rate,PL_Discount
+	[Field:PL_Rate]
+		Use:ratefield
+		Set as:$Rate
+		Storage:Rate
+		
+[Field:PL_item]
+	Use:namefield
+	Set as:$StockItemName
+	Storage:name
+	Set Always:Yes
+	Full Width:Yes
+	
+	
+[Field:PL_Discount]
+	Use:numberfield
+	Set as:$Discount
+	Storage:Discount
+	
+
+	
+	
+[Field:PL_from]
+	Use:qtyfield
+	Set as:$StartingFrom
+	Storage:StartingFrom
+	
+[Field:PL_to]
+	Use:qtyfield
+	Set as:$EndingAt
+	Storage:EndingAt	
+	
+	
+;	Storage		: Starting From		: Quantity
+;	Storage		: Ending At			: Quantity
+;	Storage		: Rate				: Rate
+;	Storage		: Discount			: Number
+;	Storage		: Stock Item Name	: String
+;	Storage		: IsPriceLevelBAD	: Logical
+
+;	
+;	11: INSERT COLLECTION OBJECT	: Full Price List
+; 	13: 	SET VALUE	: PriceLevel	: "Price1"
+;	14: 	SET VALUE	: Date			: $$TgtObject:($$Date:##vdate)
+; 	20: 		INSERT COLLECTION OBJECT	: Price Level List
+;;;	23: 		SET VALUE	: Discount		: $$ListValue:Discount:##ListKey
+;  	24: 		SET VALUE	: Rate			:  $$TgtObject:($$AsRate:##VPRICE1)
+; 	25: 		SET TARGET	: ..
+; 	28: SET TARGET	: ..
+
+	 
